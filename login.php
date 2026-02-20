@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	require('lib/database_access.inc');
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,45 +46,65 @@
 			echo '<p>'.$switchPage.'</p>';
 		}
 		else {
-			try {
-				require('lib/database_access.inc');
-
-				echo '<p>Connected</p>';
-				
-				$user = trim($_POST['user']);
-				$pass = password_hash(trim($_POST['pass']), PASSWORD_DEFAULT);
+			$db = new mysqli($hostname, $username, $password, $dbname);
+			if (mysqli_connect_errno()) {
+				echo '<p>Couldn\'t connect to the database.<br />
+					Please try again later</p>';
+				exit;
 			}
-			catch (Exception $e) {
-				echo '<p>An error occurred.<br />Message: '.$e->message.'.</p>';
-			}
-			if ($_POST['new']) {
-				$query = "SELECT username FROM login_info
-				WHERE username = ?";
-				$stmt = $db->prepare($query);
-				$stmt->bind_param('s', $user);
-				$stmt->execute();
-				$stmt->store_result();
 
-				if ($stmt->num_rows > 0) {
+			$user = trim($_POST['user']);
+			$user = preg_replace('/[[:cntrl:]]+/u', '', $user);
+			$raw_pass = trim($_POST['pass']);
+			$pass = password_hash($raw_pass, PASSWORD_DEFAULT);
+
+			// enforce server-side length check
+			$maxUsername = 30;
+			if (mb_strlen($user, 'UTF-8') > $maxUsername) {
+				echo '<p>Username must be at most '.$maxUsername.' characters.
+					Please return to the previous page and try again.</p>';
+				exit;
+			}
+
+			if (!empty($_POST['new'])) {
+				$checkQ = "SELECT 1 FROM login_info WHERE username = ?";
+				$checkSt = $db->prepare($checkQ);
+				$checkSt->bind_param('s', $user);
+				$checkSt->execute();
+				$checkSt->store_result();
+
+				if ($checkSt->num_rows > 0) {
 					echo '<p><strong>That username is already taken.</strong><br />
 						Please return to the previous page and try again.</p>';
+					$checkSt->close();
 					exit;
 				}
+				$checkSt->close();
 
 				$query = "INSERT INTO login_info VALUES (?, ?)";
 				$stmt = $db->prepare($query);
 				$stmt->bind_param('ss', $user, $pass);
-				$stmt->execute();
+				if (!$stmt->execute()) {
+					$errno = $stmt->errno;
+					$err = $stmt->error;
 
-				if ($stmt->affected_rows == 0) {
-					echo '<p>An error occurred trying to create your account.<br />
-						Please try again later.</p>';
+					if ($errno === 1062) { // Duplicate entry (race condition)
+						echo '<p><strong>That username is already taken.</strong><br />
+							Please return to the previous page and try again.</p>';
+					} else if ($errno === 1406) { // Username too long to fit in database
+						echo '<p><strong>Username must be at most '.$maxUsername.' characters.</strong><br />
+							Please return to the previous page and try again.</p>';
+					}
+					else {
+						echo '<p>Database error ('.htmlspecialchars($errno).'): <br />'
+							.htmlspecialchars($err).'</p>';
+					}
+					$stmt->close();
 					exit;
 				}
+				$stmt->close();
 
 				$_SESSION['username'] = $user;
-				$db->close();
-
 				echo '<p>Yay! New User!</p>';
 			}
 			else {
@@ -94,15 +115,20 @@
 				$stmt->execute();
 				$stmt->store_result();
 				$stmt->bind_result($hash);
+				$stmt->fetch();
 
-				if ($stmt->num_rows == 0 || !password_verify($pass, $hash)) {
-					echo '<p>Your username or password is incorrect.<br />
+				if ($stmt->num_rows == 0 || !password_verify($raw_pass, $hash)) {
+					echo '<p><strong>Your username or password is incorrect.</strong><br />
 						Please return to the previous page and try again.</p>';
+					$stmt->close();
 					exit;
 				}
+				$stmt->close();
 
 				echo '<p>Yay! You\'re back!</p>';
 			}
+
+			$db->close();
 		}
 	?>
 </body>
