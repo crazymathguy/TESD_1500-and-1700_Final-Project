@@ -31,7 +31,7 @@ USE `library_management`;
 
 CREATE TABLE `login_info` (
   `username` char(20) NOT NULL,
-  `password` char(30) NOT NULL
+  `password` char(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
