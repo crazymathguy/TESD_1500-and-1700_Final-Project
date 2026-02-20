@@ -51,6 +51,6 @@ COMMIT;
 
 -- Privileges for `webuser`@`localhost`
 
-GRANT USAGE ON *.* TO 'webuser'@'localhost' IDENTIFIED BY 'myL!brary73';
+CREATE USER 'webuser'@'localhost' IDENTIFIED BY 'myL!brary73';
 
 GRANT SELECT, INSERT, REFERENCES ON `library_management`.`login_info` TO 'webuser'@'localhost';
