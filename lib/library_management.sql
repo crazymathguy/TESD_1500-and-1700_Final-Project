@@ -53,4 +53,4 @@ COMMIT;
 
 CREATE USER 'webuser'@'localhost' IDENTIFIED BY 'myL!brary73';
 
-GRANT SELECT, INSERT, REFERENCES ON `library_management`.`login_info` TO 'webuser'@'localhost';
+GRANT SELECT, INSERT, UPDATE, REFERENCES ON `library_management`.`login_info` TO 'webuser'@'localhost';
