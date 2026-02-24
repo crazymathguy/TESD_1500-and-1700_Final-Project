@@ -13,12 +13,12 @@
 		Filename: login.php
 	-->
 
-	<title>Sean's Library Management</title>
+	<title>Personal Library Manager</title>
 </head>
 
 <body>
 	<header>
-		<h1>Sean's Library Management</h1>
+		<h1>Personal Library Management System</h1>
 	</header>
 	<?php
 		if (!isset($_POST['user']) && !isset($_POST['pass'])) {
