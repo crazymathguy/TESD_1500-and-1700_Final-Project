@@ -1,5 +1,8 @@
 <?php
 	session_start();
+	if (isset($_SESSION['user'])) {
+		header("Location: library.php");
+	}
 	require('lib/database_access.inc');
 ?>
 <!DOCTYPE html>
@@ -24,10 +27,12 @@
 		if (!isset($_POST['user']) && !isset($_POST['pass'])) {
 			if (isset($_GET['new'])) {
 				$heading = 'Create an Account';
+				$button = 'Create Account';
 				$switchPage = 'Already have an account? <a href="login.php">Log In</a>';
 			}
 			else {
 				$heading = 'Please Log In';
+				$button = 'Log In';
 				$switchPage = 'Don\'t have an account? <a href="login.php?new=true">Create an Account</a>';
 			}
 			echo '<h2>'.$heading.'</h2>';
@@ -37,13 +42,10 @@
 				<input type="text" name="user" id="user" size="20" maxlength="30" required /><br />
 				<label for="pass">Password:</label>
 				<input type="password" name="pass" id="pass" size="20" required /><br />
-				<?php
-					echo '<input type="hidden" name="new" value="'.isset($_GET['new']).'" />';
-				?>
-				<input type="submit" value="Login" />
-			</form>
 			<?php
-			echo '<p>'.$switchPage.'</p>';
+				echo '<input type="hidden" name="new" value="'.isset($_GET['new']).'" />';
+				echo '<input type="submit" value="'.$button.'" />';
+				echo '</form><p>'.$switchPage.'</p>';
 		}
 		else {
 			$db = new mysqli($hostname, $username, $password, $dbname);
@@ -73,7 +75,7 @@
 				$checkSt->execute();
 				$checkSt->store_result();
 
-				if ($checkSt->num_rows > 0) {
+				if ($checkSt->num_rows > 0 || $user == 'login_info') { // ensure people can't access the login_info table
 					echo '<p><strong>That username is already taken.</strong><br />
 						Please return to the previous page and try again.</p>';
 					$checkSt->close();
@@ -104,8 +106,18 @@
 				}
 				$stmt->close();
 
-				$_SESSION['username'] = $user;
-				echo '<p>Yay! New User!</p>';
+				$query = "CREATE TABLE `".$user."` (
+					`Item ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+					`ISBN` CHAR(13) NOT NULL,
+					`Author` CHAR(50) NOT NULL,
+					`Title` CHAR(100) NOT NULL,
+					`Shelf Location` CHAR(50) NOT NULL,
+					`Item Location` TINYINT
+				)";
+				$stmt = $db->prepare($query);
+				$stmt->execute();
+				$stmt->close();
+				// echo '<p>Yay! New User!</p>';
 			}
 			else {
 				$query = "SELECT `password` FROM login_info
@@ -125,10 +137,18 @@
 				}
 				$stmt->close();
 
-				echo '<p>Yay! You\'re back!</p>';
+				// echo '<p>Yay! You\'re back!</p>';
 			}
 
 			$db->close();
+			$_SESSION['user'] = $user;
+		?>
+	
+	<p>You have been successfully logged in.</p>
+	<script>
+		window.location.replace("library.php");
+	</script>
+	<?php
 		}
 	?>
 </body>
