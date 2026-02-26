@@ -1,21 +1,22 @@
+<!--
+	Library Management Login Page
+	Author: Sean Briggs
+	Date Created: 2026-02-17
+
+	Filename: login.php
+-->
+
 <?php
 	session_start();
-	if (isset($_SESSION['user'])) {
+	unset($_SESSION['user']);
+	/* if (isset($_SESSION['user'])) {
 		header("Location: library.php");
-	}
+	} */
 	require('lib/database_access.inc');
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<!--
-		Library Management Login Page
-		Author: Sean Briggs
-		Date Created: 2026-02-17
-
-		Filename: login.php
-	-->
-
 	<title>Personal Library Manager</title>
 </head>
 
@@ -44,6 +45,9 @@
 				<input type="password" name="pass" id="pass" size="20" required /><br />
 			<?php
 				echo '<input type="hidden" name="new" value="'.isset($_GET['new']).'" />';
+				if (isset($_GET['src'])) {
+					echo '<input type="hidden" name="return" value="'.$_GET['src'].'" />';
+				}
 				echo '<input type="submit" value="'.$button.'" />';
 				echo '</form><p>'.$switchPage.'</p>';
 		}
@@ -141,14 +145,16 @@
 			}
 
 			$db->close();
-			$_SESSION['user'] = $user;
-		?>
-	
-	<p>You have been successfully logged in.</p>
-	<script>
-		window.location.replace("library.php");
-	</script>
-	<?php
+			$_SESSION['user'] = $user;	
+
+			if (isset($_POST['return'])) {
+				$return = $_POST['return'];
+			} else {
+				$return = 'library.php';
+			}
+			echo '<script>
+				window.location.replace("'.$return.'");
+			</script>';
 		}
 	?>
 </body>

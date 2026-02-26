@@ -1,3 +1,11 @@
+<!--
+	Library Management Main Access Page
+	Author: Sean Briggs
+	Date Created: 2026-02-24
+
+	Filename: library.php
+-->
+
 <?php
 	session_start();
 	if (!isset($_SESSION['user'])) {
@@ -8,14 +16,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!--
-		Library Management Main Access Page
-		Author: Sean Briggs
-		Date Created: 2026-02-24
-
-		Filename: library.php
-	-->
-
 	<title>Personal Library Manager</title>
 </head>
 
