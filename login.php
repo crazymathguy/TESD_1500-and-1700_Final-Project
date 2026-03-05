@@ -116,7 +116,7 @@
 					`Author` CHAR(50) NOT NULL,
 					`Title` CHAR(100) NOT NULL,
 					`Shelf Location` CHAR(50) NOT NULL,
-					`Item Location` TINYINT
+					`Item Location` TINYINT UNSIGNED
 				)";
 				$stmt = $db->prepare($query);
 				$stmt->execute();
