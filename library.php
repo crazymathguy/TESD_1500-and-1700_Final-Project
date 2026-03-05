@@ -16,7 +16,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="lib/js/newItem.js" defer></script>
+	<script src="lib/javascript/newItem.js" defer></script>
 	<title>Personal Library Manager</title>
 </head>
 
