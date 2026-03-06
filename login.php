@@ -17,6 +17,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<link href="lib/styles/styles.css" rel="stylesheet" />
 	<title>Personal Library Manager</title>
 </head>
 

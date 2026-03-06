@@ -17,6 +17,8 @@
 <html>
 <head>
 	<script src="lib/javascript/newItem.js" defer></script>
+	<link href="lib/styles/styles.css" rel="stylesheet" />
+	<link href="lib/styles/tableAndForm.css" rel="stylesheet" />
 	<title>Personal Library Manager</title>
 </head>
 
@@ -35,7 +37,7 @@
 			}
 		?>
 	<h2>Your Library</h2>
-	<input type="button" name="new" id="new" value="Add New Item" onclick="AddNew()" />
+	<input type="button" id="new" value="Add New Item" onclick="AddNew()" />
 	<table id="collectionTable">
 		<tr>
 			<th>ISBN</th>
