@@ -17,7 +17,7 @@ th {
 
 /* form styles */
 
-form {
+.popup {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -32,7 +32,7 @@ form {
 	gap: 20px;
 }
 
-div.overlay {
+.overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -49,14 +49,25 @@ input#item {
 
 /* button styles */
 
-input#new {
+input#add {
+	font-size: large;
+	grid-column: 2;
+	width: 50%;
+}
+
+button#newItem {
 	margin: 10px 0px;
 	font-size: large;
 	padding: 5px 20px;
 }
 
-input#add {
-	font-size: large;
-	grid-column: 2;
-	width: 50%;
+button.trash {
+	background: none;
+	border: none;
+	cursor: pointer;
+}
+
+button.trash[disabled=false]:hover {
+	background: local;
+	background-color: lightgray;
 }

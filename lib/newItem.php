@@ -32,6 +32,12 @@
 	echo $shelf;
 	echo $item;
 
+	if ($item < 0 || $item > 255) {
+		echo '<p>Item Location must be between 0 and 255.<br />
+			Please close this page and try again.</p>';
+		exit;
+	}
+
 	$query = "INSERT INTO `".$_SESSION['user']."`
 		(ISBN, Author, Title, `Shelf Location`, `Item Location`)
 		VALUES (?, ?, ?, ?, ?)";

@@ -25,7 +25,8 @@
 	<header>
 		<h1>Personal Library Management System</h1>
 	</header>
-	<?php
+	<article>
+		<?php
 		if (!isset($_POST['user']) && !isset($_POST['pass'])) {
 			if (isset($_GET['new'])) {
 				$heading = 'Create an Account';
@@ -157,6 +158,7 @@
 				window.location.replace("'.$return.'");
 			</script>';
 		}
-	?>
+		?>
+	</article>
 </body>
 </html>
