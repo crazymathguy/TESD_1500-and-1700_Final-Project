@@ -109,7 +109,13 @@
 				}
 				$stmt->close();
 
-				$query = "CREATE TABLE `".$user."` (
+				$table = preg_replace('/[^A-Za-z0-9_]/', '', $user);
+				if ($table === '') {
+					echo json_encode(["error" => "Invalid user/table name"]);
+					exit;
+				}
+
+				$query = "CREATE TABLE `".$table."` (
 					`Item ID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 					`ISBN` CHAR(13) NOT NULL,
 					`Author` CHAR(50) NOT NULL,

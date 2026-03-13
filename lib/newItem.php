@@ -32,7 +32,13 @@
 		exit;
 	}
 
-	$query = "INSERT INTO `".$_SESSION['user']."`
+	$table = preg_replace('/[^A-Za-z0-9_]/', '', $_SESSION['user']);
+	if ($table === '') {
+		echo json_encode(["error" => "Invalid user/table name"]);
+		exit;
+	}
+
+	$query = "INSERT INTO `".$table."`
 		(ISBN, Author, Title, `Shelf Location`, `Item Location`)
 		VALUES (?, ?, ?, ?, ?)";
 	$stmt = $db->prepare($query);
@@ -48,7 +54,3 @@
 	$stmt->close();
 	$db->close();
 ?>
-
-<script>
-	window.close();
-</script>

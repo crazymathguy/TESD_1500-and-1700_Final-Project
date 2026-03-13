@@ -22,7 +22,13 @@
 
 	$id = intval($_POST['row']);
 
-	$query = "DELETE FROM `".$_SESSION['user']."`
+	$table = preg_replace('/[^A-Za-z0-9_]/', '', $_SESSION['user']);
+	if ($table === '') {
+		echo json_encode(["error" => "Invalid user/table name"]);
+		exit;
+	}
+
+	$query = "DELETE FROM `".$table."`
 		WHERE `Item ID` = ?";
 	$stmt = $db->prepare($query);
 	$stmt->bind_param('i', $id);
@@ -42,7 +48,3 @@
 	$stmt->close();
 	$db->close();
 ?>
-
-<script>
-	window.close();
-</script>
