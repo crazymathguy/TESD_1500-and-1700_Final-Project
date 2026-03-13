@@ -110,7 +110,7 @@
 				$stmt->close();
 
 				$query = "CREATE TABLE `".$user."` (
-					`Item ID` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+					`Item ID` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
 					`ISBN` CHAR(13) NOT NULL,
 					`Author` CHAR(50) NOT NULL,
 					`Title` CHAR(100) NOT NULL,
