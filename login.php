@@ -9,9 +9,6 @@
 <?php
 	session_start();
 	unset($_SESSION['user']);
-	/* if (isset($_SESSION['user'])) {
-		header("Location: library.php");
-	} */
 	require('lib/database_access.inc');
 ?>
 <!DOCTYPE html>

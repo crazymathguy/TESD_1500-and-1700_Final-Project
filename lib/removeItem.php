@@ -3,7 +3,7 @@
 	Author: Sean Briggs
 	Date Created: 2026-02-17
 
-	Filename: newItem.php
+	Filename: removeItem.php
 -->
 
 <?php
@@ -20,28 +20,22 @@
 		exit;
 	}
 
-	$isbn = htmlspecialchars(trim($_POST['isbn']));
-	$author = htmlspecialchars(trim($_POST['author']));
-	$title = htmlspecialchars(trim($_POST['title']));
-	$shelf = htmlspecialchars(trim($_POST['shelf']));
-	$item = intval($_POST['item']);
+	$id = intval($_POST['row']);
 
-	if ($item < 0 || $item > 255) {
-		echo '<p>Item Location must be between 0 and 255.<br />
-			Please close this page and try again.</p>';
-		exit;
-	}
-
-	$query = "INSERT INTO `".$_SESSION['user']."`
-		(ISBN, Author, Title, `Shelf Location`, `Item Location`)
-		VALUES (?, ?, ?, ?, ?)";
+	$query = "DELETE FROM `".$_SESSION['user']."`
+		WHERE `Item ID` = ?";
 	$stmt = $db->prepare($query);
-	$stmt->bind_param('ssssi', $isbn, $author, $title, $shelf, $item);
+	$stmt->bind_param('i', $id);
 	if (!$stmt->execute()) {
 		$errno = $stmt->errno;
 		$err = $stmt->error;
 		echo '<p>Database error ('.htmlspecialchars($errno).'): <br />'
 			.htmlspecialchars($err).'</p>';
+		$stmt->close();
+		exit;
+	}
+	if ($db->affected_rows === 0) {
+		echo '<p>No row selected. Please try again.</p>';
 		$stmt->close();
 		exit;
 	}

@@ -26,10 +26,21 @@ th {
 	border: 3px solid black;
 	border-radius: 10px;
 	background-color: rgb(235, 235, 235);
-	padding: 70px 100px;
+}
+
+#popupForm {
 	display: grid;
 	grid-template-columns: 1fr 3fr;
 	gap: 20px;
+	padding: 70px 100px;
+}
+
+#popupNotice {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	text-align: center;
+	padding: 30px;
 }
 
 .overlay {
@@ -45,6 +56,11 @@ th {
 
 input#item {
 	width: 40%;
+}
+
+.break {
+	flex-basis: 100%;
+	height: 0;
 }
 
 /* button styles */
@@ -67,7 +83,15 @@ button.trash {
 	cursor: pointer;
 }
 
-button.trash[disabled=false]:hover {
+button.trash:not([disabled]):hover {
 	background: local;
 	background-color: lightgray;
+}
+
+input#ok, input#cancel {
+	width: 70px;
+}
+
+input#cancel {
+	margin-left: 20%;
 }

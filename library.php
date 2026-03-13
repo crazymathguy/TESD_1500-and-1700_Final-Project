@@ -63,7 +63,7 @@
 					echo '<td>'.$shelf.'</td>';
 					echo '<td>'.$item.'</td>';
 					echo '<td><button class="trash"
-						onclick="Delete(\'row'.$id.'\')" >&#x1F5D1;</button></td>';
+						onclick="Delete('.$id.')" >&#x1F5D1;</button></td>';
 					echo '</tr>';
 				}
 				$stmt->close();
