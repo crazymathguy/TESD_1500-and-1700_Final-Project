@@ -77,13 +77,13 @@ button#newItem {
 	padding: 5px 20px;
 }
 
-button.trash {
+button.trash, button.pencil {
 	background: none;
 	border: none;
 	cursor: pointer;
 }
 
-button.trash:not([disabled]):hover {
+button.trash:not([disabled]):hover, button.pencil:not([disabled]):hover {
 	background: local;
 	background-color: lightgray;
 }

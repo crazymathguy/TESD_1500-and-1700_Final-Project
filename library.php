@@ -31,7 +31,7 @@
 	</header>
 	<article>
 		<h2>Your Library</h2>
-		<button id="newItem" onclick="AddNew()">Add New Item</button>
+		<button id="newItem" onclick="ItemForm(0)">Add New Item</button>
 		<table id="collectionTable">
 			<thead>
 			</thead>
